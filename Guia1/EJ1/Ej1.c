@@ -1,102 +1,102 @@
 
+/*
+  Conversión de divisas (pesos, reales, dólares estadounidenses y euros).
+  Realizar las validaciones que considere necesarias.
+*/
+
 #include <stdio.h>
+#include "constantes.h"
 #include "mensajes.h"
-/*
-#define AND &&
-#define OR ||
-#define CONDICION (0 >= Dinero_Seleccionado AND Dinero_Seleccionado >= 5)
-*/
-/*
-#define MSJ_ERROR_VALOR "Ingresaste un valor invalido"
-#define MSJ_ERROR_DIVISA_INVALIDA "Ingreso una divisa invalida"
-#define ERROR 
-*/
 
-int main(void)
+int main(void) 
 {
-  double CANTIDAD_DOLARES, CANTIDAD_PESOS, CANTIDAD_EUROS,CANTIDAD_REALES;
-  double Dinero_Ingresado;
+  float Dinero_Ingresado;
   int Dinero_Seleccionado;
+  double cantidad_dolares, cantidad_pesos, cantidad_euros,cantidad_reales;
+  
+  printf("%s", MSJ_CANT_DINERO);
 
-  printf("%s\n\n", MSJ_CANT_DINERO);
-  scanf("%lf", &Dinero_Ingresado);
-  printf("\n");
-  /*Falta validar para ver si lo que ingresa es un numero o no lo es. Tambien ver si es positivo o no lo es. No se hacerlo.
-  if(Dinero_Ingresado ==  INVALIDO)
-  {
-    printf("%s\n", MSJ_ERROR_VALOR);
-  } 
-  Volver a pedir que ingrese otro valor
-  */
+  /* Valida si se ingresó un valor, puede ser flotante*/
+  if(!scanf("%f", &Dinero_Ingresado)){
+    fprintf(stderr,"%s",MSJ_ERROR_VALOR);
+    return 1;
+  }
+  puts("\n");
+
+  /* Valida si el valor es negativo*/
+  if(Dinero_Ingresado < 0){
+    printf("%s\n", MSG_VALOR_NEGATIVO);
+    return 1;
+  }
+
+  /*printf("%s\n",MSJ_USR_DIVISA_ORIGEN);*/
 
   printf("%s\n\n", MSJ_SELECCION_DIVISA);
-  scanf("%d", &Dinero_Seleccionado);
-  printf("\n");
 
-  /*FAlta validar lo mismo que antes */
+  /* Valida si se ingresó un valor, puede ser flotante*/
+  if(!scanf("%d", &Dinero_Seleccionado))
+  {
+    fprintf(stderr,"%s",MSJ_ERROR_VALOR);
+    return 1;
+  }
 
-  while ( Dinero_Seleccionado < CASO_DOLAR &&Dinero_Seleccionado > CASO_REAL)
+  /* Valida si el valor es negativo*/
+  if(Dinero_Seleccionado < 0){
+    printf("%s\n", MSG_VALOR_NEGATIVO);
+    return 1;
+  }
+  puts("\n");
+
+   while ( Dinero_Seleccionado < OPCION_USD &&Dinero_Seleccionado > OPCION_REAL)
   {
     printf("%s\n", MSJ_ERROR_VALOR);
     printf("%s\n", MSJ_SELECCION_DIVISA);
     scanf("%d", &Dinero_Seleccionado);
   }
-  switch (Dinero_Seleccionado)
-    {
-      case CASO_DOLAR :
 
-        CANTIDAD_PESOS = Dinero_Ingresado * CONV_DOLAR_PESO;
-        CANTIDAD_EUROS = Dinero_Ingresado * CONV_DOLAR_EURO;
-        CANTIDAD_REALES = Dinero_Ingresado * CONV_DOLAR_REAL;
+  switch(Dinero_Seleccionado){
 
-        printf("%s%lf\n", MSJ_CANTIDAD_PESOS, CANTIDAD_PESOS);
-        printf("%s%lf\n", MSJ_CANTIDAD_EUROS, CANTIDAD_EUROS);
-        printf("%s%lf\n", MSJ_CANTIDAD_REALES, CANTIDAD_REALES);
+    case OPCION_USD:
+        cantidad_pesos = Dinero_Ingresado * CONV_DOLAR_PESO;
+        cantidad_euros = Dinero_Ingresado * CONV_DOLAR_EURO;
+        cantidad_reales = Dinero_Ingresado * CONV_DOLAR_REAL;
 
+        fprintf(stdout, "%s%.3f\n", MSJ_CANTIDAD_PESOS, cantidad_pesos);
+        fprintf(stdout,"%s%.3f\n", MSJ_CANTIDAD_EUROS, cantidad_euros);
+        fprintf(stdout,"%s%.3f\n", MSJ_CANTIDAD_REALES, cantidad_reales);
         break;
-      
-      case CASO_EURO:
-
-        CANTIDAD_DOLARES = Dinero_Ingresado / CONV_DOLAR_EURO;
-        CANTIDAD_PESOS = CANTIDAD_DOLARES * CONV_DOLAR_PESO;
-        CANTIDAD_REALES = CANTIDAD_DOLARES * CONV_DOLAR_REAL; 
-
-        printf("%s%lf\n", MSJ_CANTIDAD_DOLARES, CANTIDAD_DOLARES);
-        printf("%s%lf\n", MSJ_CANTIDAD_PESOS, CANTIDAD_PESOS);
-        printf("%s%lf\n", MSJ_CANTIDAD_REALES, CANTIDAD_REALES); 
-
-        break;
-        
-      case CASO_PESO:
-
-        CANTIDAD_DOLARES = Dinero_Ingresado / CONV_DOLAR_PESO;
-        CANTIDAD_EUROS = CANTIDAD_DOLARES * CONV_DOLAR_EURO;
-        CANTIDAD_REALES = CANTIDAD_DOLARES * CONV_DOLAR_REAL; 
-
-        printf("%s%lf\n", MSJ_CANTIDAD_DOLARES, CANTIDAD_DOLARES);
-        printf("%s%lf\n", MSJ_CANTIDAD_EUROS, CANTIDAD_EUROS);
-        printf("%s%lf\n", MSJ_CANTIDAD_REALES, CANTIDAD_REALES); 
-
+    
+    case OPCION_EURO:
+        cantidad_dolares = Dinero_Ingresado / CONV_DOLAR_EURO;
+        cantidad_pesos   = cantidad_dolares * CONV_DOLAR_PESO;
+        cantidad_reales  = cantidad_dolares * CONV_DOLAR_REAL; 
+        printf("%s%.3f\n", MSJ_CANTIDAD_DOLARES, cantidad_dolares);
+        printf("%s%.3f\n", MSJ_CANTIDAD_PESOS, cantidad_pesos);
+        printf("%s%.3f\n", MSJ_CANTIDAD_REALES, cantidad_reales);
         break;
 
+    case OPCION_PESO:
+        cantidad_dolares = Dinero_Ingresado / CONV_DOLAR_PESO;
+        cantidad_euros   = cantidad_dolares * CONV_DOLAR_EURO;
+        cantidad_reales  = cantidad_dolares * CONV_DOLAR_REAL; 
 
-      case CASO_REAL:
+        printf("%s%.3f\n", MSJ_CANTIDAD_DOLARES, cantidad_dolares);
+        printf("%s%.3f\n", MSJ_CANTIDAD_EUROS,  cantidad_euros);
+        printf("%s%.3f\n", MSJ_CANTIDAD_REALES, cantidad_reales);
+        break;
+    
+    case OPCION_REAL:
 
-        CANTIDAD_DOLARES = Dinero_Ingresado / CONV_DOLAR_REAL;
-        CANTIDAD_EUROS = CANTIDAD_DOLARES * CONV_DOLAR_EURO;
-        CANTIDAD_PESOS = CANTIDAD_DOLARES * CONV_DOLAR_PESO; 
+        cantidad_dolares = Dinero_Ingresado / CONV_DOLAR_REAL;
+        cantidad_euros   = cantidad_dolares * CONV_DOLAR_EURO;
+        cantidad_pesos   = cantidad_dolares * CONV_DOLAR_PESO; 
 
-        printf("%s%lf\n", MSJ_CANTIDAD_DOLARES, CANTIDAD_DOLARES);
-        printf("%s%lf\n", MSJ_CANTIDAD_EUROS, CANTIDAD_EUROS);
-        printf("%s%lf\n", MSJ_CANTIDAD_PESOS, CANTIDAD_PESOS);
+        printf("%s%.3f\n", MSJ_CANTIDAD_DOLARES, cantidad_dolares);
+        printf("%s%.3f\n", MSJ_CANTIDAD_EUROS, cantidad_euros);
+        printf("%s%.3f\n", MSJ_CANTIDAD_PESOS, cantidad_pesos);
 
         break; 
-
-      /*
-      case '\n' : case ' ':
-        break;
-      */
-    }
+  }
 
   printf("\n%s.\n", MSJ_GRACIAS);
 
